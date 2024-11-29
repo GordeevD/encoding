@@ -20,8 +20,10 @@ public class Encoding {
 
         // Example: Send Encrypted Message
         String messageBody = "Hello, Bob!";
-        EncryptedMessage encryptedMsg = new EncryptedMessage("1", "2", "RSA", messageBody);
-        graph.sendMessage(encryptedMsg);
+        // Example: Send Compressed Message
+        CompressedMessage compressedMsg = new CompressedMessage("1", "2", "run-length", messageBody);
+
+        graph.sendMessage(compressedMsg);
 
         // Similarly, create and send other types of messages
     }
