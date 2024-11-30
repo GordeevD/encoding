@@ -19,12 +19,23 @@ public class Encoding {
         graph.connectNodes("1", "2");
 
         // Example: Send Encrypted Message
-        String messageBody = "Hello, Bob!";
+        String messageBody1 = "Hello, Bob!";
         // Example: Send Compressed Message
-        CompressedMessage compressedMsg = new CompressedMessage("1", "2", "run-length", messageBody);
+        CompressedMessage compressedMsg = new CompressedMessage("1", "2", "run-length", messageBody1);
 
         graph.sendMessage(compressedMsg);
 
+        // =======================================================================================================
+        // Define the Message Body for Lossy Compression
+        String messageBody2 = "Hello, Bob! This message will be lossy compressed using FFT.";
+
+        // Create a LossyCompressedMessage Instance
+        LossyCompressedMessage lossyMsg = new LossyCompressedMessage("1", "2", "fft", messageBody2, 2);
+
+        //  Send the Lossy Compressed Message
+        graph.sendMessage(lossyMsg);
+        // =======================================================================================================
+        
         // Similarly, create and send other types of messages
     }
 }
