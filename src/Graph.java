@@ -26,6 +26,10 @@ public class Graph {
         Node receiver = nodes.get(message.receiverId);
         if (sender != null && receiver != null) {
             String processedMessage = message.processMessage(sender, receiver);
+            System.out.println("Processing Encrypted Message from " + sender.getName() + " to " + receiver.getName() + ": " + processedMessage);
+            message.metadata = "run-length-decode"; // Update metadata for decryption
+            message.messageBody = processedMessage; // Update message body for decryption
+            processedMessage = message.processMessage(sender, receiver);
             System.out.println("Received Message from " + sender.getName() + " to " + receiver.getName() + ": " + processedMessage);
         }
     }

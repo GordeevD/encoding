@@ -22,7 +22,6 @@ public class Encoding {
         String messageBody = "Hello, Bob!";
         // Example: Send Compressed Message
         CompressedMessage compressedMsg = new CompressedMessage("1", "2", "run-length", messageBody);
-
         graph.sendMessage(compressedMsg);
 
         // Similarly, create and send other types of messages

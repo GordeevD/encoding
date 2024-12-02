@@ -32,6 +32,9 @@ class CompressedMessage extends Message {
         if (metadata.equals("run-length")) {
             return runLengthEncode(messageBody);
         }
+        if (metadata.equals("run-length-decode")) {
+            return runLengthDecode(messageBody);
+        }
         return "Unsupported compression type";
     }
 
