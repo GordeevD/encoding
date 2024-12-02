@@ -66,8 +66,11 @@ class CompressedMessage extends Message {
 }
 
 class LossyCompressedMessage extends Message {
-    public LossyCompressedMessage(String senderId, String receiverId, String metadata, String messageBody) {
+    private int lossLevel;
+    
+    public LossyCompressedMessage(String senderId, String receiverId, String metadata, String messageBody, int lossLevel) {
         super(senderId, receiverId, metadata, messageBody);
+        this.lossLevel = lossLevel;
     }
 
     @Override
@@ -75,12 +78,12 @@ class LossyCompressedMessage extends Message {
         // Implement fast Fourier transform decoding based on lossiness in metadata
         // Example of FFT decoding based on metadata
         if (metadata.equals("fft")) {
-            return fftDecode(messageBody);
+            return fftDecode(messageBody, lossLevel);
         }
         return "Unsupported compression type";
     }
 
-    private String fftDecode(String encoded) {
+    private String fftDecode(String encoded, int lossLevel) {
         // Convert the encoded string to an array of doubles
         String[] parts = encoded.split(",");
         double[] input = new double[parts.length];
@@ -89,7 +92,7 @@ class LossyCompressedMessage extends Message {
         }
 
         // Perform the inverse FFT
-        Complex[] result = inverseFFT(input);
+        Complex[] result = inverseFFT(input, lossLevel);
 
         // Convert the result to a decoded string
         StringBuilder decoded = new StringBuilder();
@@ -100,13 +103,20 @@ class LossyCompressedMessage extends Message {
         return decoded.toString();
     }
 
-    private Complex[] inverseFFT(double[] input) {
+    private Complex[] inverseFFT(double[] input, int losslevel) {
         int n = input.length;
         Complex[] x = new Complex[n];
         for (int i = 0; i < n; i++) {
             x[i] = new Complex(input[i], 0);
         }
-        return fft(x, true);
+        
+        Complex[] fftResult = fft(x, false);
+        int threshold = fftResult.length / (lossLevel + 1);  
+        for (int i = threshold; i < fftResult.length; i++) {
+            fftResult[i] = new Complex(0, 0);  
+        }
+        
+        return fft(fftResult, true);
     }
 
     private Complex[] fft(Complex[] x, boolean inverse) {
